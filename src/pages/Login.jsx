@@ -86,7 +86,7 @@ const Login = ({visible,setUser}) => {
             <Input type="password" placeholder="password" onChange={e=>setPassword(e.target.value)} value={password} error={errors.password} />
         </InputContainer>
         <Button typ="pr" content="Login" onClick={handleLogin} />
-        <Error>{errors.email ? "plaise entre valide email or username": errors.password  ? "plaise entre valide password" : "invalid account"}</Error>
+        <Error>{errors.email ? "plaise entre valide email or username": errors.password  ? "plaise entre valide password" : errors.status && "invalid account"}</Error>
     </Container>
   )
 }
