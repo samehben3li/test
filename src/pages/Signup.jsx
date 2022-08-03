@@ -107,6 +107,7 @@ const Option = styled.option``
 const Signup = ({visible,setPage}) => {
 
     const [pos, setPos] = useState(1)
+    const [first,setFirst] = useState(true)
     const [values,setValues] = useState({
         username: "",
         email: "",
@@ -173,6 +174,9 @@ const Signup = ({visible,setPage}) => {
         })
         setErrors(validate1({username: values.username,email: values.email,password: values.password, confirmPass: values.confirmePassword}))
         if (errors.status === false ) {
+            setFirst(false)
+        }
+        if ((errors.status === false ) && (first===false)){
             setPos(2)
         }
     }

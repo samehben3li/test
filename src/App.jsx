@@ -93,9 +93,10 @@ const App = () => {
     localStorage.setItem("user",JSON.stringify(user))
 },[user]) */
 
+console.log(user)
   return (
     <Container>
-      {!user 
+      {user === null 
       ?<><Signup visible={page===1} setPage={setPage} />
       <Hr />
       <LinkLogin onClick={()=>setPage(page===1 ? 2 : 1)} setUser={setUser}>Or {page === 1 ? "Login" : "Signup"} ?</LinkLogin>

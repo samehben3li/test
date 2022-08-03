@@ -18,11 +18,16 @@ const SubTitle = styled.h4`
 `
 
 const Profile = ({user,setUser}) => {
+
+  const handleLogout = () => {
+    localStorage.setItem("user",JSON.stringify(null))
+    setUser(null)
+  }
   return (
     <Container>
         <Title>Welcome</Title>
         <SubTitle>{user?.firstName +" " + user?.lastName}</SubTitle>
-        <Button content="Logout" typ="pr" onClick={()=>setUser(null)}/>
+        <Button content="Logout" typ="pr" onClick={handleLogout}/>
     </Container>
   )
 }
