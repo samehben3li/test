@@ -96,10 +96,10 @@ const App = () => {
   return (
     <Container>
       {!user 
-      ?<><Signup visible={page===1} />
+      ?<><Signup visible={page===1} setPage={setPage} />
       <Hr />
       <LinkLogin onClick={()=>setPage(page===1 ? 2 : 1)} setUser={setUser}>Or {page === 1 ? "Login" : "Signup"} ?</LinkLogin>
-      <Login visible={page===2}  setPage={setPage} setUser={setUser} /> </>
+      <Login visible={page===2}setPage={setPage} setUser={setUser} /> </>
       :<Profile user={user} setUser={setUser} />}
     </Container>
   )

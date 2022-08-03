@@ -21,7 +21,7 @@ const Profile = ({user,setUser}) => {
   return (
     <Container>
         <Title>Welcome</Title>
-        <SubTitle>{user?.first_name +" " + user?.last_name}</SubTitle>
+        <SubTitle>{(user?.first_name || user.firstName) +" " + (user?.last_name || user?.lastName)}</SubTitle>
         <Button content="Logout" typ="pr" onClick={()=>setUser(null)}/>
     </Container>
   )

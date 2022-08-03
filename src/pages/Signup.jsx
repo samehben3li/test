@@ -214,6 +214,7 @@ const Signup = ({visible,setPage}) => {
 
         setErrors(validate2({firstName: values.firstName,lastName:values.lastName,phone: values.phone,profession: values.profession}))
         
+        console.log(errors.status)
         if (errors.status===false)
          {
             users.push(values)
