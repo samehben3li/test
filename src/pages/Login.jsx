@@ -65,16 +65,17 @@ const Login = ({visible,setUser}) => {
         return errors
     } 
 
-    const handleLogin = (e) => {
+    const handleLogin = async(e) => {
         e.preventDefault()
         setErrors({email: "", password: "",status: false})
         setErrors(validate({email: userEmail,password}))
         if(!errors.status){
-            const user = users.find(u=>(u.email === userEmail && u.password === password)||(u.username===userEmail && u.password === password))
+            const user = await users.find(u=>(u.email === userEmail && u.password === password)||(u.username===userEmail && u.password === password))
             if (!user){
                 setErrors({...errors,status : true})
             }
             setUser(user)
+            localStorage.setItem("user",JSON.stringify(user))
         }
     }
 

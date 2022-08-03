@@ -89,9 +89,9 @@ const App = () => {
   const [user,setUser] = useState(JSON.parse(localStorage.getItem("user")) || null)
 
 
-  useEffect(() => {
+/*   useEffect(() => {
     localStorage.setItem("user",JSON.stringify(user))
-},[user])
+},[user]) */
 
   return (
     <Container>
