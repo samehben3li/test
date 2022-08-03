@@ -71,7 +71,9 @@ const Login = ({visible,setUser}) => {
         setErrors(validate({email: userEmail,password}))
         if(!errors.status){
             const user = users.find(u=>(u.email === userEmail && u.password === password)||(u.username===userEmail && u.password === password))
-            console.log(user)
+            if (!user){
+                setErrors({...errors,status : true})
+            }
             setUser(user)
         }
     }
@@ -84,7 +86,7 @@ const Login = ({visible,setUser}) => {
             <Input type="password" placeholder="password" onChange={e=>setPassword(e.target.value)} value={password} error={errors.password} />
         </InputContainer>
         <Button typ="pr" content="Login" onClick={handleLogin} />
-        <Error>{errors.email ? "plaise entre valide email or username": errors.password  && "plaise entre valide password"}</Error>
+        <Error>{errors.email ? "plaise entre valide email or username": errors.password  ? "plaise entre valide password" : "invalid account"}</Error>
     </Container>
   )
 }
