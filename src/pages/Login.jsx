@@ -44,7 +44,7 @@ const Error  = styled.span`
         50%{
             opacity: 0;
         }
-        
+
     } */
 `
 
@@ -71,12 +71,16 @@ const Login = ({visible,setUser}) => {
         setErrors({email: "", password: "",status: false})
         setErrors(validate({email: userEmail,password}))
         if(!errors.status){
-            const user = await users.find(u=>(u.email === userEmail && u.password === password)||(u.username===userEmail && u.password === password))
-            if (!user){
-                setErrors({...errors,status : true})
+            let user = users.filter(u=>(u?.username === userEmail && u?.password===password))
+            if (user.length === 0){
+                user = users.filter(u=>(u?.email === userEmail && u?.password===password))
             }
-            setUser(user)
-            localStorage.setItem("user",JSON.stringify(user))
+            if (user.length===0 ){
+                setErrors({...errors,status : true})
+            }else{
+            setUser(user[0])
+            localStorage.setItem("user",JSON.stringify(user[0])) 
+        }
         }
     }
 
