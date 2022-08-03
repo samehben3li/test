@@ -161,8 +161,6 @@ const Signup = ({visible,setPage}) => {
     } 
     const handleNext = () => {
         setErrors({
-
-            ...errors,
         username: false,
         email: false,
         password: false,
@@ -173,7 +171,7 @@ const Signup = ({visible,setPage}) => {
         profession:false,
         status: false
         })
-        setErrors( validate1({username: values.username,email: values.email,password: values.password, confirmPass: values.confirmePassword}))
+        setErrors(validate1({username: values.username,email: values.email,password: values.password, confirmPass: values.confirmePassword}))
         if (errors.status === false ) {
             setPos(2)
         }
@@ -213,8 +211,6 @@ const Signup = ({visible,setPage}) => {
         })
 
         setErrors(validate2({firstName: values.firstName,lastName:values.lastName,phone: values.phone,profession: values.profession}))
-        
-        console.log(errors.status)
         if (errors.status===false)
          {
             users.push(values)
