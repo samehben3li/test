@@ -44,6 +44,7 @@ const Error  = styled.span`
         50%{
             opacity: 0;
         }
+        
     } */
 `
 
