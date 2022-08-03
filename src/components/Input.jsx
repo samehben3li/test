@@ -13,6 +13,7 @@ const StyledInput = styled.input`
     color: #3c354e;
     font-size: 1rem;
     font-weight: bold;
+    outline: ${props=>props.error ? "1px solid red" : "none"};
     &:focus {
         display: inline-block;
         box-shadow: 0 0 0 0.2rem #b9abe0;
@@ -27,9 +28,10 @@ const StyledInput = styled.input`
 `
 
 
-const Input = ({type,placeholder}) => {
+const Input = (props) => {
+  const {type,placeholder,onChange,error} = props
   return (
-    <StyledInput type={type} placeholder={placeholder} />
+    <StyledInput type={type} placeholder={placeholder} error={error} onChange={onChange} />
   )
 }
 
