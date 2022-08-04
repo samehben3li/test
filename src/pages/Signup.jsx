@@ -119,8 +119,7 @@ const Signup = ({visible,setPage}) => {
         phone: "",
         profession:""
     })
-
-    const [errors,setErrors] = useState({
+    const [errorsValues,setErrorsValues] = useState({
         username: false,
         email: false,
         password: false,
@@ -128,56 +127,45 @@ const Signup = ({visible,setPage}) => {
         firstName: false,
         lastName: false,
         phone: false,
-        profession:false,
-        status : false
+        profession:false
     })
+    const [errors,setErrors] = useState([])
 
-    const validate1 = ({username,email,password,confirmPass}) => {
-        const errors = {}
-        errors.status= false
-        const regexEmail = /^[^\s@]+@[^\s@].[^\s@]{2,}$/i
-        if (!username) {
-            errors.username = true
-            errors.status= true
-        } 
-        if (!regexEmail.test(email)) {
-            errors.email = true
-            errors.status= true
-        }
-        const regexPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/
-        if (!password) {
-            errors.password = true
-            errors.status= true
-        } else if (!regexPass.test(password)) {
-            errors.password = true
-            errors.status= true
-        }
-        if (!confirmPass) {
-            errors.confirmePassword = true
-            errors.status= true
-        } else if (password !== confirmPass) {
-            errors.confirmePassword = true
-            errors.status= true
-        }
-        return errors
-    } 
     const handleNext = () => {
-        setErrors({
-        username: false,
-        email: false,
-        password: false,
-        confirmePassword: false,
-        firstName: false,
-        lastName: false,
-        phone: false,
-        profession:false,
-        status: false
+        setErrors([])
+        setErrorsValues({
+            username: false,
+            email: false,
+            password: false,
+            confirmePassword: false,
+            firstName: false,
+            lastName: false,
+            phone: false,
+            profession:false
         })
-        setErrors(validate1({username: values.username,email: values.email,password: values.password, confirmPass: values.confirmePassword}))
-        if (errors.status === false ) {
+        const regexEmail = /^[^\s@]+@[^\s@].[^\s@]{2,}$/i
+        const regexPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/
+        if (values.username.length<3){
+            setErrors(prev=>[...prev,"invalide username"])
+            setErrorsValues(prev=>({...prev,username:true}))
+        }
+        if (!regexEmail.test(values.email)) {
+            setErrors(prev=>[...prev,"invalide email"])
+            setErrorsValues(prev=>({...prev,email:true}))
+        }
+        if (!regexPass.test(values.password)) {
+            setErrors(prev=>[...prev,"invalide password"])
+            setErrorsValues(prev=>({...prev,password:true}))
+        }
+        if (values.password !== values.confirmePassword) {
+            setErrors(prev=>[...prev,"invalide confirme password"])
+            setErrorsValues(prev=>({...prev,confirmePassword:true}))
+        }
+
+        if (errors.length === 0 ) {
             setFirst(false)
         }
-        if ((errors.status === false ) && (first===false)){
+        if ((errors.length === 0 ) && (first===false)){
             setPos(2)
         }
     }
@@ -229,10 +217,10 @@ const Signup = ({visible,setPage}) => {
       <TiTle>Test Signup</TiTle>
       <InputContainer>
         <InputWrapper pos={pos}>
-            <Input type="text" placeholder="Username" value={values.username} onChange={e=>setValues({...values,username: e.target.value})} error={errors.username} />
-            <Input type="email" placeholder="Email" value={values.email} onChange={e=>setValues({...values,email: e.target.value})} error={errors.email} />
-            <Input type="password" placeholder="Password" value={values.password} onChange={e=>setValues({...values,password: e.target.value})} error={errors.password} />
-            <Input type="password" placeholder="Confirm Password" value={values.confirmePassword} onChange={e=>setValues({...values,confirmePassword: e.target.value})} error={errors.confirmePassword} />
+            <Input type="text" placeholder="Username" value={values.username} onChange={e=>setValues({...values,username: e.target.value})} error={errorsValues.username} />
+            <Input type="email" placeholder="Email" value={values.email} onChange={e=>setValues({...values,email: e.target.value})} error={errorsValues.email} />
+            <Input type="password" placeholder="Password" value={values.password} onChange={e=>setValues({...values,password: e.target.value})} error={errorsValues.password} />
+            <Input type="password" placeholder="Confirm Password" value={values.confirmePassword} onChange={e=>setValues({...values,confirmePassword: e.target.value})} error={errorsValues.confirmePassword} />
         </InputWrapper>
         <InputWrapper2 pos={pos}>
             <Input type="text" placeholder="First Name" value={values.firstName} onChange={e=>setValues({...values,firstName: e.target.value})} error={errors.firstName} />
@@ -253,7 +241,7 @@ const Signup = ({visible,setPage}) => {
         </>
         }
       </ButtonContainer>
-      <Error>{ errors.status && "SOmethin want wrong"}</Error>
+      <Error>{ errors.length>0 && errors[0] }</Error>
     </Container>
   )
 }
