@@ -109,6 +109,7 @@ const Signup = ({visible,setPage}) => {
 
     const [pos, setPos] = useState(1)
     const [first,setFirst] = useState(true)
+    const [firstSign,setFirstSign] = useState(true)
     const [values,setValues] = useState({
         username: "",
         email: "",
@@ -137,11 +138,7 @@ const Signup = ({visible,setPage}) => {
             username: false,
             email: false,
             password: false,
-            confirmePassword: false,
-            firstName: false,
-            lastName: false,
-            phone: false,
-            profession:false
+            confirmePassword: false
         })
         const regexEmail = /^[^\s@]+@[^\s@].[^\s@]{2,}$/i
         const regexPass = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/
@@ -170,45 +167,37 @@ const Signup = ({visible,setPage}) => {
         }
     }
 
-    const validate2 =({firstName,lastName,phone,profession}) => {
-        const errors = {}
-        if (firstName.length<3) {
-            errors.firstName = true
-            errors.status = true
-        }
-        if (lastName.length<3) {
-            errors.lastName = true
-            errors.status = true
-        }
-        if (isNaN(phone)||phone.length!==8){
-            errors.phone = true
-            errors.status = true
-        }
-        return errors
-
-    }
-
     const handleSignup = (e) => {
         e.preventDefault()
-        setErrors({
-            ...errors,
-            username: false,
-        email: false,
-        password: false,
-        confirmePassword: false,
-        firstName: false,
-        lastName: false,
-        phone: false,
-        profession:false,
-        status: false
-        })
+        setErrors([])
+        setErrorsValues(prev=>({...prev,
+            firstName: false,
+            lastName: false,
+            phone: false,
+            profession:false
+        }))
+        if (values.firstName.length<3) {
+            setErrors(prev=>[...prev,"invalide first name"])
+            setErrorsValues(prev=>({...prev,firstName: true}))
+        }
+        if (values.lastName.length<3) {
+            setErrors(prev=>[...prev,"invalide last name"])
+            setErrorsValues(prev=>({...prev,lastName: true}))
+        }
+        if (isNaN(values.phone)||values.phone.length!==8){
+            setErrors(prev=>[...prev,"invalide phone number"])
+            setErrorsValues(prev=>({...prev,phone: true}))
+        }
+        
 
-        setErrors(validate2({firstName: values.firstName,lastName:values.lastName,phone: values.phone,profession: values.profession}))
-        if (errors.status===false)
-         {
+        if (errors.length === 0 ) {
+            setFirstSign(false)
+        }
+        if ((errors.length === 0 ) && (firstSign===false)){
             users.push(values)
             setPage(2)
         }
+        
     }
 
 
@@ -223,10 +212,10 @@ const Signup = ({visible,setPage}) => {
             <Input type="password" placeholder="Confirm Password" value={values.confirmePassword} onChange={e=>setValues({...values,confirmePassword: e.target.value})} error={errorsValues.confirmePassword} />
         </InputWrapper>
         <InputWrapper2 pos={pos}>
-            <Input type="text" placeholder="First Name" value={values.firstName} onChange={e=>setValues({...values,firstName: e.target.value})} error={errors.firstName} />
-            <Input type="text" placeholder="Last Name" value={values.lastName} onChange={e=>setValues({...values,lastName: e.target.value})} error={errors.lastName} />
-            <Input type="text" placeholder="Phone" value={values.phone} onChange={e=>setValues({...values,phone: e.target.value})} error={errors.phone} />
-            <Select onChange={e=>setValues({...values,profession: e.target.value})} error={errors.profession} >
+            <Input type="text" placeholder="First Name" value={values.firstName} onChange={e=>setValues({...values,firstName: e.target.value})} error={errorsValues.firstName} />
+            <Input type="text" placeholder="Last Name" value={values.lastName} onChange={e=>setValues({...values,lastName: e.target.value})} error={errorsValues.lastName} />
+            <Input type="text" placeholder="Phone" value={values.phone} onChange={e=>setValues({...values,phone: e.target.value})} error={errorsValues.phone} />
+            <Select onChange={e=>setValues({...values,profession: e.target.value})} error={errorsValues.profession} >
                 <Option value={1}>Ingenieur</Option>
                 <Option value={2}>tec Sup</Option>
             </Select>
