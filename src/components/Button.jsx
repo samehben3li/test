@@ -15,11 +15,14 @@ const StyledButton = styled.button`
     scale: 1.1;/* 
     background: linear-gradient(to left, #14163c 0%, #03217b 100%); */
   }
+  &:disabled{
+    cursor: not-allowed;
+  }
 `
 
-const Button = ({content,onClick,typ}) => {
+const Button = ({content,onClick,typ,disabled}) => {
   return (
-    <StyledButton typ={typ} onClick={onClick}>{content}</StyledButton>
+    <StyledButton typ={typ} onClick={onClick} disabled={disabled}>{content}</StyledButton>
   )
 }
 

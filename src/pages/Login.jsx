@@ -51,48 +51,50 @@ const Error  = styled.span`
 const Login = ({visible,setUser}) => {
 
     const [userEmail,setUserEmail] = useState("")
+    const [errorMail,setErrorMail] = useState(false)
     const [password,setPassword] = useState("")
-    const [errors,setErrors] = useState({email: false, password: false,status: false})
-
-    const validate = ({email,password}) => {
-        const errors = {}/* 
-        const regexEmail = /^[^\s@]+@[^\s@].[^\s@]{2,}$/i */
-        if (email.length < 3) {
-            errors.email = true
-        }
-        if (password.length<3) {
-            errors.password = true
-        }
-        return errors
-    } 
+    const [errorPass,setErrorPass] = useState(false)
+    const [errors,setErrors] = useState([])
+    const [isFetching,setIsFetching] = useState(false)
 
     const handleLogin = async(e) => {
+        setIsFetching(true)
         e.preventDefault()
-        setErrors({email: "", password: "",status: false})
-        setErrors(validate({email: userEmail,password}))
-        if(!errors.status){
+        setErrors([])
+        setErrorMail(false)
+        setErrorPass(false)
+        if (userEmail.length < 3) {
+            setErrors(prev => [...prev,"invalide username or email !"])
+            setErrorMail(true)
+        }
+        if (password.length<3) {
+            setErrors(prev=>[...prev,"invalide password !"])
+            setErrorPass(true)
+        }
+        if( errors.length === 0 ){
             let user = users.filter(u=>(u?.username === userEmail && u?.password===password))
             if (user.length === 0){
                 user = users.filter(u=>(u?.email === userEmail && u?.password===password))
             }
             if (user.length===0 ){
-                setErrors({...errors,status : true})
+                setErrors(prev=>[...prev,"you account not found!"])
             }else{
             setUser(user[0])
             localStorage.setItem("user",JSON.stringify(user[0])) 
         }
         }
+        setIsFetching(false)
     }
 
   return (
     <Container visible={visible}>
         <TiTle>Test Login</TiTle>
         <InputContainer>
-            <Input type="text" placeholder="Username or Email" onChange={e=>setUserEmail(e.target.value)} value={userEmail} error={errors.email} />
-            <Input type="password" placeholder="password" onChange={e=>setPassword(e.target.value)} value={password} error={errors.password} />
+            <Input type="text" placeholder="Username or Email" onChange={e=>setUserEmail(e.target.value)} value={userEmail} error={errorMail} />
+            <Input type="password" placeholder="password" onChange={e=>setPassword(e.target.value)} value={password} error={errorPass} />
         </InputContainer>
-        <Button typ="pr" content="Login" onClick={handleLogin} />
-        <Error>{errors.email ? "plaise entre valide email or username": errors.password  ? "plaise entre valide password" : errors.status && "invalid account"}</Error>
+        <Button typ="pr" content="Login" onClick={handleLogin} disabled={isFetching} />
+        <Error>{ errors?.length > 0 && errors[0] }</Error>
     </Container>
   )
 }

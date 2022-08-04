@@ -93,7 +93,6 @@ const App = () => {
     localStorage.setItem("user",JSON.stringify(user))
 },[user]) */
 
-console.log(user)
   return (
     <Container>
       {user === null 
